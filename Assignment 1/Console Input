@@ -1,0 +1,28 @@
+	AREA	ConsoleInput, CODE, READONLY
+	IMPORT	main
+	IMPORT	getkey
+	IMPORT	sendchar
+	EXPORT	start
+	PRESERVE8
+
+start
+	MOV R4, #0			; give R4 the value of 0
+	MOV R5, #10			; give R5 the value of 10
+read
+	BL	getkey			; read key from console
+	CMP	R0, #0x0D  		; while (key != CR)
+	BEQ	endRead			; {
+	
+	BL	sendchar		; echo key back to console
+
+	MUL	R4, R5, R4		; result = result x 10
+	SUB	R0, R0, #0x30	; convert ASCII to numeric
+	ADD	R4, R4, R0		; result = result + value	
+
+	B	read			; }
+	
+endRead
+
+stop	B	stop
+
+	END	
